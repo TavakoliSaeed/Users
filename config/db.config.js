@@ -14,6 +14,7 @@ const sequelize = new Sequelize("Warehouse", "sa", "123", {
 
 const db = {};
  
+db.Sequelize = Sequelize;
 db.sequelize = sequelize;
  
 db.users = require('../model/users.model.js')(sequelize, Sequelize);

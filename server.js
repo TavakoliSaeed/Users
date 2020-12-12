@@ -3,7 +3,6 @@ var app = express();
 var bodyParser = require('body-parser');
 app.use(bodyParser.json())
 
-
 const db = require('./config/db.config.js');
   
 // force: true will drop the table if it already exists
