@@ -2,9 +2,9 @@ const db = require('../config/db.config.js');
 const UserGroup = db.UserGroup;
 const Users = db.users;
 
-// Post a User
+// Post a User Group
 exports.creategroup = (req, res) => {  
-    // Save to MsSQL databasez
+    // Save to MsSQL database
     UserGroup.create({
         UserGroupName: req.body.UserGroupName
       })
