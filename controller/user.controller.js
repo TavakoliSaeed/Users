@@ -1,12 +1,18 @@
 const db = require('../config/db.config.js');
 const User = db.users;
- 
+const UserGroup = db.UserGroup;
+const bcrypt = require('bcryptjs');
+
 // Post a User
 exports.create = (req, res) => {  
-  // Save to MsSQL database
+  // Save to MsSQL databasez
+  
+const salt = bcrypt.genSaltSync(10);
+const hash = bcrypt.hashSync(req.body.UsersPassword, salt);
+
   User.create({  
     UsersName: req.body.UsersName,
-    UsersPassword: req.body.UsersPassword
+    UsersPassword: hash
   }).then(user => {    
     // Send created users to client
     res.send(user);
@@ -15,7 +21,18 @@ exports.create = (req, res) => {
  
 // FETCH all Users
 exports.findAll = (req, res) => {
-  User.findAll().then(users => {
+  User.findAll({
+    include: [
+      {
+        model: UserGroup,
+        as: "UserGroup",
+        attributes: ["id", "UserGroupName"],
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+  }).then(users => {
     // Send all users to Client
     res.send(users);
   });
@@ -24,7 +41,18 @@ exports.findAll = (req, res) => {
  
 // Find a User by Id
 exports.findbyUserId = (req, res) => {  
-    User.findById(req.params.usersId).then(users => {
+    User.findById(req.params.usersId,{
+      include: [
+        {
+          model: UserGroup,
+          as: "UserGroup",
+          attributes: ["id", "UserGroupName"],
+          through: {
+            attributes: [],
+          },
+        },
+      ],
+    }).then(users => {
     res.send(users);
   })
 };
